@@ -10,11 +10,13 @@ class Booking(webdriver.Chrome):
         self.implicitly_wait(15)
         self.maximize_window()
 
+    # Esta função serve para abrir a página Web pretendida e para aceitar os cookies.
     def land_first_page(self):
         self.get(const.BASE_URL)
         accept_cookies = self.find_element_by_id("onetrust-accept-btn-handler")
         accept_cookies.click()
 
+    # Esta função serve para automatizarmos o processo de escolha da linguagem do website.
     def change_language(self, language=None):
         language_element = self.find_element_by_css_selector(
             'button[data-modal-id="language-selection"]'
@@ -26,6 +28,7 @@ class Booking(webdriver.Chrome):
         )
         selected_language_element.click
 
+    # Esta função serve para automatizarmos o processo de escolha da moeda utilizada no website.
     def change_currency(self, currency=None):
         currency_element = self.find_element_by_css_selector(
             'button[data-tooltip-text="Escolha a sua moeda"]'
@@ -36,6 +39,7 @@ class Booking(webdriver.Chrome):
         )
         selected_currency_element.click()
 
+    # Esta função serve para automatizarmos o processo de escolha do nosso destino.
     def select_place_to_go(self, place_to_go):
         search_field = self.find_element_by_id('ss')
         search_field.clear()
@@ -46,6 +50,7 @@ class Booking(webdriver.Chrome):
         )
         first_result.click()
 
+    # Esta função serve para automatizarmos o processo de escolha da data.
     def select_date(self, check_in_date, check_out_date):
         check_in_element = self.find_element_by_css_selector(
             f'td[data-date="{check_in_date}"]'
@@ -57,16 +62,7 @@ class Booking(webdriver.Chrome):
         )
         check_out_element.click()
 
-    def select_number_passengers(increase_button, decrease_button, actual_number_of_passengers, desired_number_of_passengers):
-        while True:
-            if int(actual_number_of_passengers.get_attribute('value')) == desired_number_of_passengers:
-                break
-            else:
-                if int(actual_number_of_passengers.get_attribute('value')) < desired_number_of_passengers:
-                    increase_button.click()
-                else:
-                    decrease_button.click()
-
+    # Esta função serve para automatizarmos o processo de escolha do número de adultos e de quartos.
     def select_passengers(self, adults, rooms):
         selection_element = self.find_element_by_id('xp__guests__toggle')
         selection_element.click()
@@ -105,18 +101,21 @@ class Booking(webdriver.Chrome):
                 else:
                     decrease_rooms_button.click()
     
+    # Esta função serve para automatizarmos o clicar do botão Pesquisar.
     def search(self):
         search_button = self.find_element_by_css_selector(
             'button[type="submit"]'
         )
         search_button.click()
 
+    # Esta função serve para automatizarmos a visualização dos hotéis com o preço mais baixo em primeiro lugar.
     def lowest_price_first(self):
         lowest_price_filter = self.find_element_by_css_selector(
             'li[data-id="price"]'
         )
         lowest_price_filter.click()
 
+    # Esta função serve para automatizarmos a filtragem da classificação dos hotéis.
     def apply_star_rating(self, rating):
         star_filtration_box = self.find_element_by_css_selector(
             'div[data-filters-group="class"]'
@@ -127,6 +126,7 @@ class Booking(webdriver.Chrome):
             if str(star_element.get_attribute('innerHTML')).strip() == f'{rating} estrelas':
                 star_element.click()
 
+    # Esta função serve para visualizarmos os resultados.
     def report_results(self):
         hotel_boxes = self.find_element_by_id(
             'search_results_table'
